@@ -55,6 +55,10 @@ namespace EmployeeValidation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Address,City,State")] Employee employee)
         {
+            if (!String.IsNullOrEmpty(employee.IsValid()))
+            {
+                ModelState.AddModelError("Custom", employee.IsValid());
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(employee);
@@ -91,7 +95,11 @@ namespace EmployeeValidation.Controllers
             {
                 return NotFound();
             }
-
+            
+            if (!String.IsNullOrEmpty(employee.IsValid()))
+            {
+                ModelState.AddModelError("Custom", employee.IsValid());
+            }
             if (ModelState.IsValid)
             {
                 try
